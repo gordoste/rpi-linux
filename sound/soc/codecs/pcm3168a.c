@@ -7,6 +7,8 @@
  * Author: Damien Horsley <Damien.Horsley@imgtec.com>
  */
 
+#define DEBUG 1
+
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>

@@ -5,6 +5,9 @@
 // Copyright (C) 2020 Renesas Electronics Corp.
 // Copyright (C) 2020 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 //
+
+#define DEBUG 1
+
 #include <linux/device.h>
 #include <linux/mod_devicetable.h>
 #include <linux/module.h>
