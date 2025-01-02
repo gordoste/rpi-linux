@@ -14,6 +14,8 @@
 #include <linux/platform_device.h>
 #include <sound/graph_card.h>
 
+#define EZSOUND_DAILINK_NAME "ezsound I2S PCM"
+
 /*
  * Custom driver can have own priv
  * which includes simple_util_priv.
@@ -34,7 +36,7 @@ static int custom_card_probe(struct snd_soc_card *card)
 	struct custom_priv *custom_priv = simple_to_custom(simple_priv);
 	struct device *dev = simple_priv_to_dev(simple_priv);
 
-	dev_info(dev, "custom probe\n");
+	dev_dbg(dev, "custom probe\n");
 
 	custom_priv->custom_params = 1;
 
@@ -47,7 +49,7 @@ static int custom_hook_pre(struct simple_util_priv *priv)
 	struct device *dev = simple_priv_to_dev(priv);
 
 	/* You can custom before parsing */
-	dev_info(dev, "hook : %s\n", __func__);
+	dev_dbg(dev, "hook : %s\n", __func__);
 
 	return 0;
 }
@@ -56,28 +58,11 @@ static int custom_hook_post(struct simple_util_priv *priv)
 {
 	struct device *dev = simple_priv_to_dev(priv);
 	struct snd_soc_card *card = simple_priv_to_card(priv);
-	struct simple_dai_props *dai_props;
-	struct snd_soc_dai_link *dai_link;
-	struct simple_util_dai *dai;
-	int i;
 
 	/* You can custom after parsing */
-	dev_info(dev, "hook : %s\n", __func__);
-
-	for (int l = 0; l < card->num_links; l++) {
-		dai_link = simple_priv_to_link(priv, l);
-		dai_props = simple_priv_to_props(priv, l);
-		dev_dbg(dev, "Link #%d: %s %s", l, dai_link->name, dai_link->stream_name);
-		for_each_prop_dai_cpu(dai_props, i, dai) {
-			dev_dbg(dev, "CPU DAI #%d: %s", i, dai->name);
-		}
-		for_each_prop_dai_codec(dai_props, i, dai) {
-			dev_dbg(dev, "Codec DAI #%d: %s", i, dai->name);
-		}
-	}
+	dev_dbg(dev, "hook : %s\n", __func__);
 
 	/* overwrite .probe sample */
-	card = simple_priv_to_card(priv);
 	card->probe = custom_card_probe;
 
 	return 0;
@@ -88,14 +73,27 @@ static int custom_normal(struct simple_util_priv *priv,
 			 struct link_info *li)
 {
 	struct device *dev = simple_priv_to_dev(priv);
+	struct snd_soc_card *card = simple_priv_to_card(priv);
+	struct simple_dai_props *dai_props;
+	struct snd_soc_dai_link *dai_link;
+	struct snd_soc_dai_link_component *dlc;
+	int i;
 
 	/*
 	 * You can custom Normal parsing
 	 * before/affter audio_graph2_link_normal()
 	 */
-	dev_info(dev, "hook : %s\n", __func__);
+	dev_dbg(dev, "hook : %s\n", __func__);
 
-	return audio_graph2_link_normal(priv, lnk, li);
+	int ret = audio_graph2_link_normal(priv, lnk, li);
+
+	for (int l = 0; l < card->num_links; l++) {
+		dai_link = simple_priv_to_link(priv, l);
+		dai_props = simple_priv_to_props(priv, l);
+		simple_util_set_dailink_name(dev, dai_link, EZSOUND_DAILINK_NAME);
+	}
+
+	return ret;
 }
 
 static int custom_dpcm(struct simple_util_priv *priv,
@@ -108,7 +106,7 @@ static int custom_dpcm(struct simple_util_priv *priv,
 	 * You can custom DPCM parsing
 	 * before/affter audio_graph2_link_dpcm()
 	 */
-	dev_info(dev, "hook : %s\n", __func__);
+	dev_dbg(dev, "hook : %s\n", __func__);
 
 	return audio_graph2_link_dpcm(priv, lnk, li);
 }
@@ -123,7 +121,7 @@ static int custom_c2c(struct simple_util_priv *priv,
 	 * You can custom Codec2Codec parsing
 	 * before/affter audio_graph2_link_c2c()
 	 */
-	dev_info(dev, "hook : %s\n", __func__);
+	dev_dbg(dev, "hook : %s\n", __func__);
 
 	return audio_graph2_link_c2c(priv, lnk, li);
 }
@@ -145,7 +143,7 @@ static int custom_startup(struct snd_pcm_substream *substream)
 	struct simple_util_priv *priv = snd_soc_card_get_drvdata(rtd->card);
 	struct device *dev = simple_priv_to_dev(priv);
 
-	dev_info(dev, "custom startup\n");
+	dev_dbg(dev, "custom startup\n");
 
 	return simple_util_startup(substream);
 }
