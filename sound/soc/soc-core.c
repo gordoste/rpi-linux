@@ -17,6 +17,8 @@
 //   o Add more codecs and platforms to ensure good API coverage.
 //   o Support TDM on PCM and I2S
 
+#define DEBUG 1
+
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -1438,8 +1440,11 @@ int snd_soc_runtime_set_dai_fmt(struct snd_soc_pcm_runtime *rtd,
 
 		// there can only be one master when using multiple codecs
 		if (i && (codec_dai_fmt & SND_SOC_DAIFMT_MASTER_MASK)) {
+			dev_dbg(rtd->dev, "DAI #%d - tweaking dai_fmt", i);
 			codec_dai_fmt &= ~SND_SOC_DAIFMT_MASTER_MASK;
 			codec_dai_fmt |= SND_SOC_DAIFMT_CBS_CFS;
+		} else {
+			dev_dbg(rtd->dev, "DAI #%d - NOT tweaking dai_fmt", i);
 		}
 
 		ret = snd_soc_dai_set_fmt(codec_dai, codec_dai_fmt);
