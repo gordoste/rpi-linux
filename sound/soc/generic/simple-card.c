@@ -5,6 +5,8 @@
 // Copyright (C) 2012 Renesas Solutions Corp.
 // Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
+#define DEBUG 1
+
 #include <linux/cleanup.h>
 #include <linux/clk.h>
 #include <linux/device.h>

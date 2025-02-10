@@ -4,6 +4,8 @@
 //
 // Copyright (c) 2016 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
+#define DEBUG 1
+
 #include <dt-bindings/sound/audio-graph.h>
 #include <linux/cleanup.h>
 #include <linux/clk.h>

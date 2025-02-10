@@ -5,6 +5,8 @@
  * Copyright (c) 2016 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
  */
 
+#define DEBUG 1
+
 #ifndef __SIMPLE_CARD_UTILS_H
 #define __SIMPLE_CARD_UTILS_H
 
