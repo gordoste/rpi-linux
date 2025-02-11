@@ -314,5 +314,5 @@ config SND_DACBERRY400
 config SND_EZSOUND6X8
 	tristate "Support for ezsound6x8 soundcard"
 	select SND_SOC_PCM3168A_I2C
-	hlp
+	help
 	  Say Y or M if you want to add support for ezsound6x8 soundcard
