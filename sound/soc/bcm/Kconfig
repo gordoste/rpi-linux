@@ -310,3 +310,9 @@ config SND_DACBERRY400
 	select SND_SOC_TLV320AIC3X_I2C
 	help
 	  Say Y or M if you want to add support for tlv320aic3x add-on
+
+config SND_EZSOUND6X8
+	tristate "Support for ezsound6x8 soundcard"
+	select SND_SOC_PCM3168A_I2C
+	hlp
+	  Say Y or M if you want to add support for ezsound6x8 soundcard
