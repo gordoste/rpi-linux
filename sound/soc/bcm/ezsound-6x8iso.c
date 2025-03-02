@@ -1,13 +1,9 @@
 /*
- * ASoC Driver for AudioInjector Pi add on soundcard
+ * ASoC Driver for ezsound6x8 isolated soundcard
  *
- *  Created on: 13-May-2016
- *      Author: flatmax@flatmax.org
- *              based on code by  Cliff Cai <Cliff.Cai@analog.com> for the ssm2602 machine blackfin.
- *              with help from Lars-Peter Clausen for simplifying the original code to use the dai_fmt field.
- *		i2s_node code taken from the other sound/soc/bcm machine drivers.
- *
- * Copyright (C) 2016 Flatmax Pty. Ltd.
+ *  Created on: 01-Mar-2025
+ *      Author: gordoste@iinet.net.au
+ *              based on other sound/soc/bcm drivers.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,18 +21,8 @@
 #include <sound/core.h>
 #include <sound/soc.h>
 #include <sound/pcm_params.h>
-//#include <sound/control.h>
 
 #include "../codecs/pcm3168a.h"
-
-//static const unsigned int bcm2835_rates_24576000[] = {
-	//96000,
-//};
-
-//static struct snd_pcm_hw_constraint_list bcm2835_constraints_24576000 = {
-	//.list = bcm2835_rates_24576000,
-	//.count = ARRAY_SIZE(bcm2835_rates_24576000),
-//};
 
 static int snd_ezsound6x8_startup(struct snd_pcm_substream *substream)
 {
@@ -129,11 +115,6 @@ static struct snd_soc_card snd_soc_ezsound6x8 = {
 	.owner = THIS_MODULE,
 	.dai_link = ezsound6x8_dai,
 	.num_links = ARRAY_SIZE(ezsound6x8_dai),
-
-	//.dapm_widgets = wm8731_dapm_widgets,
-	//.num_dapm_widgets = ARRAY_SIZE(wm8731_dapm_widgets),
-	//.dapm_routes = audioinjector_audio_map,
-	//.num_dapm_routes = ARRAY_SIZE(audioinjector_audio_map),
 };
 
 static int ezsound6x8_probe(struct platform_device *pdev)
